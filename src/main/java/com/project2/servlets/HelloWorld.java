@@ -23,11 +23,11 @@ public class HelloWorld extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		log.info("connected");
+		log.info("Hello World");
 		resp.setContentType("json");
 
 		resp.setStatus(200);
-		resp.getWriter().append(mapper.writeValueAsString("Hello"));
+		resp.getWriter().append(mapper.writeValueAsString("Hello World"));
 	}
 
 }
