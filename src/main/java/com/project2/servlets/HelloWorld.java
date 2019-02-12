@@ -27,7 +27,7 @@ public class HelloWorld extends HttpServlet {
 		resp.setContentType("json");
 
 		resp.setStatus(200);
-		resp.getWriter().append(mapper.writeValueAsString("Hello World, This is a test to see if CI works"));
+		resp.getWriter().append(mapper.writeValueAsString("Hello World, This is a test to see if Continuous Intergration works"));
 	}
 
 }
