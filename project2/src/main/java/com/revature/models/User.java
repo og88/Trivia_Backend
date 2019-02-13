@@ -22,6 +22,12 @@ public class User {
 		this.highScore = highScore;
 	}
 
+	public User(String username, int experience, int highScore) {
+		this.username = username;
+		this.experience = experience;
+		this.highScore = highScore;
+	}
+
 	public String getUsername() {
 		return username;
 	}

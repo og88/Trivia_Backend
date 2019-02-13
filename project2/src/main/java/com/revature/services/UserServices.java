@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.revature.DAO.UserDAOImplementation;
@@ -26,11 +27,11 @@ public class UserServices {
 		return UserDAOImplementation.getUserDAO().updateUser(username, user);
 	}
 	
-	boolean updateScore(String username, int highScore) {
+	boolean updateScore(String username, int highScore) throws SQLException {
 		return UserDAOImplementation.getUserDAO().updateScore(username, highScore);
 	}
 	
-	User getUser(String username) {
+	User getUser(String username) throws SQLException {
 		return UserDAOImplementation.getUserDAO().getUser(username);
 	}
 	
