@@ -1,2 +1,2 @@
 # Trivia_Backend
-# Development Branch
+# Simple Server has been created
