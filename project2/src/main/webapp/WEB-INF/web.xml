@@ -4,4 +4,17 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+  
+  <servlet>
+  	<servlet-name>MServlet</servlet-name>
+  	<servlet-class>com.revature.Servlets.MasterServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>MServlet</servlet-name>
+  	<url-pattern>/rest/*</url-pattern>
+  </servlet-mapping>
 </web-app>
+
+
