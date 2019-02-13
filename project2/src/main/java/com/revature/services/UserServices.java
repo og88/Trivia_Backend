@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,15 +20,15 @@ public class UserServices {
 		return userServices;
 	}
 	
-	boolean registerUser(User user) {
+	boolean registerUser(User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	
-	boolean updateUser(String username, User user) {
+	boolean updateUser(String username, User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().updateUser(username, user);
 	}
 	
-	boolean updateScore(String username, int highScore) throws SQLException {
+	boolean updateScore(String username, int highScore) throws SQLException, FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().updateScore(username, highScore);
 	}
 	

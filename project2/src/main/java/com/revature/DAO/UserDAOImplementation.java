@@ -1,5 +1,6 @@
 package com.revature.DAO;
 
+import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.revature.models.User;
-import com.revature.utils.JDBCconnectionUtil;
+import com.revature.util.JDBCconnectionUtil;
 
 public class UserDAOImplementation implements UserDAO{
 
@@ -29,7 +30,7 @@ public class UserDAOImplementation implements UserDAO{
 	
 	
 	@Override
-	public boolean registerUser(User user) {
+	public boolean registerUser(User user) throws FileNotFoundException {
 		User newUser = user;
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "{call INSERT_USER (?,?,?)}";
@@ -54,7 +55,7 @@ public class UserDAOImplementation implements UserDAO{
 	}
 
 	@Override  
-	public boolean updateUser(String username, User user) {
+	public boolean updateUser(String username, User user) throws FileNotFoundException {
 		//What is the username string for?  old username to reference row in the DB? 
 		//Or new username to be inserted? How is this username being saved and passed?
 		User updateUser = user;
@@ -85,7 +86,7 @@ public class UserDAOImplementation implements UserDAO{
 	}
 
 	@Override
-	public boolean updateScore(String username, int highScore) throws SQLException {
+	public boolean updateScore(String username, int highScore) throws SQLException, FileNotFoundException {
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "UPDATE TriviaUsers SET HIGH_SCORE = (?) WHERE USERNAME = (?)";
 			PreparedStatement ps = conn.prepareCall(sql);
@@ -120,6 +121,9 @@ public class UserDAOImplementation implements UserDAO{
 					results.getInt("HIGH_SCORE"));
 			}
 			conn.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -143,7 +147,7 @@ public class UserDAOImplementation implements UserDAO{
 				conn.close();
 				return allEmployees;
 				
-		}catch(SQLException e) {
+		}catch(FileNotFoundException | SQLException e) {
 			e.getStackTrace();
 		}
 		return null;

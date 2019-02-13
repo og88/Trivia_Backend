@@ -1,5 +1,6 @@
 package com.revature.DAO;
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.revature.models.Question;
-import com.revature.utils.JDBCconnectionUtil;
+import com.revature.util.JDBCconnectionUtil;
 
 public class QuestionDAOImplementation implements QuestionDAO{
 
@@ -38,7 +39,7 @@ public class QuestionDAOImplementation implements QuestionDAO{
 	}
 
 	@Override
-	public boolean updateCounters(int questionID, int correctCount, int incorrectCount) {
+	public boolean updateCounters(int questionID, int correctCount, int incorrectCount) throws FileNotFoundException {
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "SELECT CORRECT_COUNT, INCORRECT_COUNT FROM Questions WHERE QUESTION_ID = (?)";
 			String update;

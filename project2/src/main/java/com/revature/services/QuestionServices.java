@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import com.revature.DAO.QuestionDAOImplementation;
@@ -26,7 +27,7 @@ public class QuestionServices {
 		return QuestionDAOImplementation.getQuestionDAO().updateQuestion(questionID, question);
 	}
 	
-	boolean updateCounters(int questionID, int correctCount, int incorrectCount) {
+	boolean updateCounters(int questionID, int correctCount, int incorrectCount) throws FileNotFoundException {
 		return QuestionDAOImplementation.getQuestionDAO().updateCounters(questionID, correctCount, incorrectCount);
 	}
 	
