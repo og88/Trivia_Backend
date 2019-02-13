@@ -12,5 +12,6 @@ public interface QuestionDAO {
 	Question getQuestion(int questionID);
 	List<Question> getQuestionsByCategory(String questionCategory);
 	void viewStatistics(int questionID);
+	boolean verifyAnswer(String givenAnswer, String correctAnswer);
 	
 }
