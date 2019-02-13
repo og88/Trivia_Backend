@@ -15,8 +15,9 @@ public class MasterDispatcher {
 
 	public static Object process(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
 		if (req.getRequestURI().contains("login")) {
-			return null;
+			return new String("Hello, World!");
 		}
+
 		return null;
 	}
 }
