@@ -28,9 +28,6 @@ public class UserServices {
 		return UserDAOImplementation.getUserDAO().updateUser(username, user);
 	}
 	
-	boolean updateScore(String username, int highScore) throws SQLException, FileNotFoundException {
-		return UserDAOImplementation.getUserDAO().updateScore(username, highScore);
-	}
 	
 	User getUser(String username) throws SQLException {
 		return UserDAOImplementation.getUserDAO().getUser(username);

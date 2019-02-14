@@ -29,12 +29,14 @@ public class QuestionDAOImplementation implements QuestionDAO{
 	@Override
 	public boolean insertQuestion(Question question) {
 		// TODO Auto-generated method stub
+		//For inserting questions as they used.  new questions to the DB only.
 		return false;
 	}
 	
 	@Override
 	public boolean updateQuestion(int questionID, Question question) {
 		// TODO Auto-generated method stub
+		//what are we updating??
 		return false;
 	}
 
@@ -72,6 +74,7 @@ public class QuestionDAOImplementation implements QuestionDAO{
 			}else if (incorrectCount>0) {  //answered incorrectly
 				update = "UPDATE Questions SET INCORRECT_COUNT = (?) WHERE QUESTION_ID = (?)";
 				ps = conn.prepareStatement(update);
+				ps.close();
 				incorrect+=1;
 				ps.setInt(1, incorrect);
 				ps.setInt(2, questionID);
@@ -98,18 +101,21 @@ public class QuestionDAOImplementation implements QuestionDAO{
 	@Override
 	public Question getQuestion(int questionID) {
 		// TODO Auto-generated method stub
+		//what exactly is is this used for?
 		return null;
 	}
 	
 	@Override
 	public List<Question> getQuestionsByCategory(String questionCategory) {
 		// TODO Auto-generated method stub
+		//what exactly is this used for?
 		return null;
 	}
 	
 	@Override
 	public void viewStatistics(int questionID) {
 		// TODO Auto-generated method stub
+		//???
 		
 	}
 

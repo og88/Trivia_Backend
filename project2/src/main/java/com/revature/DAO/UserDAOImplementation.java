@@ -32,7 +32,8 @@ public class UserDAOImplementation implements UserDAO{
 	@Override
 	public boolean registerUser(User user) throws FileNotFoundException {
 		User newUser = user;
-		try (Connection conn = JDBCconnectionUtil.getConnection()) {
+
+		try ( Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "{call INSERT_USER (?,?,?)}";
 			CallableStatement ps = conn.prepareCall(sql);
 			ps.setString(1, newUser.getUsername());
@@ -51,24 +52,22 @@ public class UserDAOImplementation implements UserDAO{
 		catch (SQLException e) {
 			e.getStackTrace();
 		}
+		
 		return false;
 	}
 
 	@Override  
 	public boolean updateUser(String username, User user) throws FileNotFoundException {
-		//What is the username string for?  old username to reference row in the DB? 
-		//Or new username to be inserted? How is this username being saved and passed?
 		User updateUser = user;
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			//Need name of procedure dor updating user info if one exists.
-			//This method is assuming username string is old username for referencing row in DB.
-			//Can change this method as needed.
-			String sql = "UPDATE TriviaUsers SET USERNAME = (?), PASS = (?), EMAIL = (?) WHERE USERNAME = (?)";
+			//need name of procedure if there is one
+			String sql = "UPDATE TriviaUsers SET USERNAME = (?), PASS = (?), EMAIL = (?), HIGH_SCORE = (?) WHERE USERNAME = (?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, updateUser.getUsername());
 			ps.setString(2, updateUser.getPassword());
 			ps.setString(3, updateUser.getEmail());
-			ps.setString(4, username);
+			ps.setInt(4, updateUser.getHighScore());
+			ps.setString(5, username);
 			
 				if(ps.executeUpdate() > 0) {
 					conn.close();
@@ -85,25 +84,7 @@ public class UserDAOImplementation implements UserDAO{
 		return false;
 	}
 
-	@Override
-	public boolean updateScore(String username, int highScore) throws SQLException, FileNotFoundException {
-		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "UPDATE TriviaUsers SET HIGH_SCORE = (?) WHERE USERNAME = (?)";
-			PreparedStatement ps = conn.prepareCall(sql);
-			ps.setInt(1, highScore);
-			ps.setString(2, username);
-			
-				if(ps.executeUpdate() > 0) {
-					conn.close();
-					return true;
-				} 
-				else {
-					conn.close();
-					throw new SQLException();
-				}
-		}
-	}
-
+	
 	@Override
 	public User getUser(String username) throws SQLException {
 		//Is there a method to validate users? (Username/Password)

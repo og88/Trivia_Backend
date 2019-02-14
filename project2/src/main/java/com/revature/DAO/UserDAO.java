@@ -10,7 +10,6 @@ public interface UserDAO {
 	
 	boolean registerUser(User user) throws FileNotFoundException;
 	boolean updateUser(String username, User user) throws FileNotFoundException;
-	boolean updateScore(String username, int highScore) throws SQLException, FileNotFoundException;
 	User getUser(String username) throws SQLException;
 	List<User> getAllUsers();
 	int calculateRank(int highScore);
