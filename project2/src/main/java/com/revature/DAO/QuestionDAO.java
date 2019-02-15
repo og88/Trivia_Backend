@@ -12,7 +12,7 @@ public interface QuestionDAO {
 	boolean updateCounters(int questionID, int correctCount, int incorrectCount) throws FileNotFoundException;
 	Question getQuestion(int questionID);
 	List<Question> getQuestionsByCategory(String questionCategory);
-	void viewStatistics(int questionID);
+	Object viewStatistics(int questionID);
 	boolean verifyAnswer(String givenAnswer, String correctAnswer);
 	
 }

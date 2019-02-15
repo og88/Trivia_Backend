@@ -7,19 +7,31 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.models.Question;
+import com.revature.models.User;
+import com.revature.services.QuestionServices;
+import com.revature.services.UserServices;
+
 public class MasterDispatcher {
+
+	private final static ObjectMapper mapper = new ObjectMapper();
 
 	private MasterDispatcher() {
 	}
 
 	public static Object process(HttpServletRequest req, HttpServletResponse resp)
 			throws SQLException, ServletException, IOException {
-		if (req.getRequestURI().contains("login")) {
+		if (req.getRequestURI().contains("login")) { // needed
+														// #####################################################################
 			return new String("Hello, World!");
 		} else if (req.getRequestURI().contains("rank/calculate")) {
-			return new String("Calculating rank");
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().calculateRank(user.getHighScore());
 		} else if (req.getRequestURI().contains("leader")) {
-			return new String("Getting leaderboard");
+			return UserServices.getUserServices().viewLeaderboard();
 		} else if (req.getRequestURI().contains("user")) {
 			return Users(req, resp);
 		} else if (req.getRequestURI().contains("question")) {
@@ -29,34 +41,47 @@ public class MasterDispatcher {
 		return null;
 	}
 
-	public static Object Users(HttpServletRequest req, HttpServletResponse resp) {
+	public static Object Users(HttpServletRequest req, HttpServletResponse resp)
+			throws JsonParseException, JsonMappingException, IOException, SQLException {
 		if (req.getRequestURI().contains("user/register")) {
-			return new StringBuffer("register a new user");
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().registerUser(user);
 		} else if (req.getRequestURI().contains("user/update")) {
-			return new StringBuffer("updating User");
-		} else if (req.getRequestURI().contains("score/update")) {
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().updateUser("username", user); // Need to find how to get old username
+		} else if (req.getRequestURI().contains("score/update")) {// needed
+																	// #####################################################################
 			return new StringBuffer("Updating String");
 		} else if (req.getRequestURI().contains("user/get")) {
-			return new StringBuffer("Get a specific User");
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().getUser(user.getUsername());
 		} else if (req.getRequestURI().contains("user/all")) {
-			return new StringBuffer("Getting all users");
+			return UserServices.getUserServices().getAllUsers();
 		}
 		return null;
 	}
 
-	public static Object Questions(HttpServletRequest req, HttpServletResponse resp) {
-		if(req.getRequestURI().contains("question/insert")) {
-			return new StringBuffer("Inserting a question");
+	public static Object Questions(HttpServletRequest req, HttpServletResponse resp)
+			throws JsonParseException, JsonMappingException, IOException {
+		if (req.getRequestURI().contains("question/insert")) {
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().insertQuestion(question);
 		} else if (req.getRequestURI().contains("question/update")) {
+			Question question = mapper.readValue(req.getReader(), Question.class);
 			return new StringBuffer("Updating a question");
 		} else if (req.getRequestURI().contains("question/counter")) {
-			return new StringBuffer("Updating question counter");
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().updateCounters(question.getQuestionID(),
+					question.getCorrectCount(), question.getIncorrectCount());
 		} else if (req.getRequestURI().contains("question/get")) {
-			return new StringBuilder("Getting a specific question");
-		} else if (req.getRequestURI().contains("question/getCat")) {
-			return new StringBuilder("Getting questions by category");
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().getQuestion(question.getQuestionID());
+		} else if (req.getRequestURI().contains("question/Cat")) {
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().getQuestionsByCategory(question.getQuestionCategory());
 		} else if (req.getRequestURI().contains("stats")) {
-			return new StringBuilder("Getting Statistics");
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().viewStatistics(question.getQuestionID());
 		}
 		return null;
 	}

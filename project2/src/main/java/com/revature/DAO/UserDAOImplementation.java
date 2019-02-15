@@ -142,7 +142,8 @@ public class UserDAOImplementation implements UserDAO{
 	}
 
 	@Override
-	public void viewLeaderboard() {
+	public Object viewLeaderboard() {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

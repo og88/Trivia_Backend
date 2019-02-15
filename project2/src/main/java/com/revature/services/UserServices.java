@@ -20,29 +20,29 @@ public class UserServices {
 		return userServices;
 	}
 	
-	boolean registerUser(User user) throws FileNotFoundException {
+	public boolean registerUser(User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	
-	boolean updateUser(String username, User user) throws FileNotFoundException {
+	public boolean updateUser(String username, User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().updateUser(username, user);
 	}
 	
 	
-	User getUser(String username) throws SQLException {
+	public User getUser(String username) throws SQLException {
 		return UserDAOImplementation.getUserDAO().getUser(username);
 	}
 	
-	List<User> getAllUsers() {
+	public List<User> getAllUsers() {
 		return UserDAOImplementation.getUserDAO().getAllUsers();
 	}
 	
-	int calculateRank(int highScore) {
+	public int calculateRank(int highScore) {
 		return UserDAOImplementation.getUserDAO().calculateRank(highScore);
 	}
 	
-	void viewLeaderboard() {
-		UserDAOImplementation.getUserDAO().viewLeaderboard();
+	public Object viewLeaderboard() {
+		return UserDAOImplementation.getUserDAO().viewLeaderboard();
 	}
 	
 }

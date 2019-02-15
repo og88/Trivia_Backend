@@ -40,8 +40,8 @@ public class QuestionServices {
 		return QuestionDAOImplementation.getQuestionDAO().getQuestionsByCategory(questionCategory);
 	}
 	
-	public void viewStatistics(int questionID) {
-		QuestionDAOImplementation.getQuestionDAO().viewStatistics(questionID);
+	public Object viewStatistics(int questionID) {
+		return QuestionDAOImplementation.getQuestionDAO().viewStatistics(questionID);
 	}
 	
 	public boolean verifyAnswer(String givenAnswer, String correctAnswer) {

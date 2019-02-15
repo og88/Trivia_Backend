@@ -1,8 +1,10 @@
 package com.revature.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,7 +17,8 @@ public class JDBCconnectionUtil {
 	public  static Connection getConnection() throws SQLException, FileNotFoundException {
 		try {
 			Properties props = new Properties();
-			FileInputStream in = new FileInputStream("C:\\SpringToolSuite\\project2\\src\\main\\resources\\dbConnInfo.properties");
+			//FileInputStream in = new FileInputStream("C:\\SpringToolSuite\\project2\\src\\main\\resources\\dbConnInfo.properties");
+			InputStream in = new FileInputStream("dbConnInfo.properties");
 			props.load(in);
 			in.close();
 			

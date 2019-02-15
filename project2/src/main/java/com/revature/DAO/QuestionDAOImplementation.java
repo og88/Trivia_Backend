@@ -113,7 +113,8 @@ public class QuestionDAOImplementation implements QuestionDAO{
 	}
 	
 	@Override
-	public void viewStatistics(int questionID) {
+	public Object viewStatistics(int questionID) {
+		return questionID;
 		// TODO Auto-generated method stub
 		//???
 		
