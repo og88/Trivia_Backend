@@ -1,29 +1,20 @@
 package com.revature.models;
 
-public class User {
+public class UserMemento {
+
 	private String username;
 	private String password;
 	private String tempPassword;
 	private String email;
 	private int experience;
 	private int highScore;
-	
-	public User() {
-		super();
-	}
 
-	public User(String username, String password, String tempPassword, String email, int experience, int highScore) {
+	public UserMemento(String username, String password, String tempPassword, String email, int experience, int highScore) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.tempPassword = tempPassword;
 		this.email = email;
-		this.experience = experience;
-		this.highScore = highScore;
-	}
-
-	public User(String username, int experience, int highScore) {
-		this.username = username;
 		this.experience = experience;
 		this.highScore = highScore;
 	}
@@ -32,48 +23,24 @@ public class User {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getTempPassword() {
 		return tempPassword;
 	}
 
-	public void setTempPassword(String tempPassword) {
-		this.tempPassword = tempPassword;
-	}
-
 	public String getEmail() {
 		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public int getExperience() {
 		return experience;
 	}
 
-	public void setExperience(int experience) {
-		this.experience = experience;
-	}
-
 	public int getHighScore() {
 		return highScore;
-	}
-
-	public void setHighScore(int highScore) {
-		this.highScore = highScore;
 	}
 
 	@Override
@@ -103,7 +70,7 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserMemento other = (UserMemento) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -131,20 +98,4 @@ public class User {
 		return true;
 	}
 	
-	public UserMemento CreateMemento() {
-		
-		return new UserMemento(this.username, this.password, this.tempPassword, this.email, this.experience, this.highScore);
-		
-	}
-	
-	public void SetMemento(UserMemento memento) {
-		
-		this.username = memento.getUsername();
-		this.password = memento.getPassword();
-		this.tempPassword = memento.getTempPassword();
-		this.email = memento.getEmail();
-		this.experience = memento.getExperience();
-		this.highScore = memento.getHighScore();
-		
-	}
 }

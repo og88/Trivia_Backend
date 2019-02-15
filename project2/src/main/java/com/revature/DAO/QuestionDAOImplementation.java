@@ -119,4 +119,33 @@ public class QuestionDAOImplementation implements QuestionDAO{
 		
 	}
 
+	@Override
+	public boolean verifyAnswer(String givenAnswer, String correctAnswer) {
+		if (givenAnswer == ""){
+			return false;
+		}
+		
+		
+		
+		givenAnswer = givenAnswer.toLowerCase().trim();
+		correctAnswer = correctAnswer.toLowerCase().trim();
+		
+		givenAnswer = givenAnswer.replace("the ","");
+		givenAnswer = givenAnswer.replace("a ","");
+		givenAnswer = givenAnswer.replace("an ","");
+		givenAnswer = givenAnswer.replaceAll(" ", "");
+		givenAnswer = givenAnswer.replaceAll("'", "");
+		
+		correctAnswer = correctAnswer.replace("the ","");
+		correctAnswer = correctAnswer.replace("a ","");
+		correctAnswer = correctAnswer.replace("an ","");
+		correctAnswer = correctAnswer.replaceAll(" ", "");
+		correctAnswer = correctAnswer.replaceAll("'", "");
+		
+		if (givenAnswer.equals(correctAnswer)) {
+			return true;
+		}
+		return false;
+	}
+
 }
