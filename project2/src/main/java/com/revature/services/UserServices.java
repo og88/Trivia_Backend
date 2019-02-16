@@ -38,7 +38,13 @@ public class UserServices {
 	}
 	
 	public int calculateRank(int highScore) {
-		return UserDAOImplementation.getUserDAO().calculateRank(highScore);
+		try {
+			return UserDAOImplementation.getUserDAO().calculateRank(highScore);
+		} catch (FileNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
 	public Object viewLeaderboard() {

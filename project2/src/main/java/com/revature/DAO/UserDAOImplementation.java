@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,19 +33,22 @@ public class UserDAOImplementation implements UserDAO{
 	@Override
 	public boolean registerUser(User user) throws FileNotFoundException {
 		User newUser = user;
-
 		try ( Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "{call INSERT_USER (?,?,?)}";
+			String sql = "call INSERT_USER (?,?,?,?)";
 			CallableStatement ps = conn.prepareCall(sql);
 			ps.setString(1, newUser.getUsername());
 			ps.setString(2, newUser.getPassword());
 			ps.setString(3, newUser.getEmail());
-			
-			if(ps.executeUpdate() > 0) {
+			ps.registerOutParameter(4, Types.NUMERIC);
+			ps.executeUpdate();
+			int result = ps.getInt(4);
+			if(result > 0) {
+				log.info("Registration Success");
 				conn.close();
 				return true;
 			} 
 			else {
+				log.info("Registration Failure");
 				conn.close();
 				throw new SQLException();
 			}
@@ -135,8 +139,17 @@ public class UserDAOImplementation implements UserDAO{
 	}
 
 	@Override
-	public int calculateRank(int highScore) {
+	public int calculateRank(int highScore) throws FileNotFoundException, SQLException {
 		//Need to know how rank is calculated
+		try (Connection conn = JDBCconnectionUtil.getConnection()) {
+		String sql = "SELECT COUNT(*)+1 FROM TriviaUsers WHERE high_score > ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, highScore);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			return rs.getInt(1);
+		}
+		}
 		// TODO Auto-generated method stub
 		return 0;
 	}
