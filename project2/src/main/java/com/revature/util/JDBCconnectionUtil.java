@@ -19,9 +19,6 @@ public class JDBCconnectionUtil {
 			props.load(in);
 			in.close();
 			
-			//Need Database info for Database we are using
-			//Properties file is in src/main/resources
-			
 			String driver = props.getProperty("jdbc.driver");
 				if(driver!=null) {
 					Class.forName(driver);	
@@ -29,9 +26,8 @@ public class JDBCconnectionUtil {
 					String url = props.getProperty("jdbc.url");
 					String username = props.getProperty("jdbc.username");
 					String password = props.getProperty("jdbc.password");
+					
 			return DriverManager.getConnection(url, username, password);
-			
-			
 		}
 		catch ( IOException | ClassNotFoundException | SQLException e) {
 			e.getStackTrace();

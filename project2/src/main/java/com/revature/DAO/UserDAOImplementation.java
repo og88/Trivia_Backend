@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.revature.customExceptions.UserNotFoundException;
 import com.revature.models.User;
 import com.revature.util.JDBCconnectionUtil;
 
@@ -87,23 +88,21 @@ public class UserDAOImplementation implements UserDAO{
 	
 	@Override
 	public User getUser(String username) throws SQLException {
-		//Is there a method to validate users? (Username/Password)
-		//Or are we just getting them by username?
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE FROM TriviaUsers WHERE USERNAME = ?";
+			String sql = "SELECT USERNAME, PASS, EXPERIENCE, HIGH_SCORE FROM TriviaUsers WHERE USERNAME = ?";
 			PreparedStatement ps = conn.prepareCall(sql);
 			ps.setString(1, username);
 			
 			ResultSet results = ps.executeQuery();
 			while (results.next()) {
 				return new User(
-					results.getString("USERNAME"), 
+					results.getString("USERNAME"),
+					results.getString("PASS"),
 					results.getInt("EXPERIENCE"),
 					results.getInt("HIGH_SCORE"));
 			}
 			conn.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -142,9 +141,49 @@ public class UserDAOImplementation implements UserDAO{
 	}
 
 	@Override
-	public void viewLeaderboard() {
-		// TODO Auto-generated method stub
-		
+	public void viewLeaderboard() throws FileNotFoundException, SQLException {
+		try(Connection conn = JDBCconnectionUtil.getConnection()) {
+			String sql = "SELECT * FROM TriviaUsers ORDER BY HIGH_SCORE";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			List<User> scores = new ArrayList<>();
+			while(rs.next()) {
+				for (int i=0; i<5; i++) {
+					scores.add(new User(
+						rs.getString("USERNAME"),
+						rs.getInt("HIGH_SCORE")));
+				}
+			}
+		}
+	}
+
+	public User authenticateUser(String username, String password) throws UserNotFoundException, FileNotFoundException, SQLException {
+		try(Connection conn = JDBCconnectionUtil.getConnection()) {
+			String sql = "SELECT PASS FROM TriviaUsers WHERE USERNAME = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			String sql2 = "? = CALL GET_USER_HASH(?,?)";
+			CallableStatement cs = conn.prepareCall(sql2);
+			cs.registerOutParameter(1, java.sql.Types.VARCHAR);
+			cs.setString(2,  username);
+			cs.setString(3,  password);
+			cs.execute();
+			
+			String vPass = cs.getString(1);
+			String cPass = "";
+			ResultSet rs = ps.executeQuery(); 
+			while(rs.next()) {
+				cPass = rs.getString("PASS");
+			}
+			
+			if(cPass == vPass) {
+				return getUser(username);
+			}
+			else {
+				throw new UserNotFoundException("Incorrect username or password");
+			}
+		}
 	}
 
 }

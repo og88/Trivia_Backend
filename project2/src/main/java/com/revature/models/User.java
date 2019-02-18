@@ -21,10 +21,22 @@ public class User {
 		this.experience = experience;
 		this.highScore = highScore;
 	}
+	
+	public User(String username, String password, int experience, int highScore) {
+		this.username = username;
+		this.password = password;
+		this.experience = experience;
+		this.highScore = highScore;
+	}
 
 	public User(String username, int experience, int highScore) {
 		this.username = username;
 		this.experience = experience;
+		this.highScore = highScore;
+	}
+	
+	public User(String username, int highScore) {
+		this.username = username;
 		this.highScore = highScore;
 	}
 

@@ -13,6 +13,6 @@ public interface UserDAO {
 	User getUser(String username) throws SQLException;
 	List<User> getAllUsers();
 	int calculateRank(int highScore);
-	void viewLeaderboard();
+	void viewLeaderboard() throws FileNotFoundException, SQLException;
 	
 }

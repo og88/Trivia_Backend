@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.revature.DAO.UserDAOImplementation;
+import com.revature.customExceptions.UserNotFoundException;
 import com.revature.models.User;
 
 public class UserServices {
@@ -18,6 +19,10 @@ public class UserServices {
 			userServices = new UserServices();
 		}
 		return userServices;
+	}
+	
+	User authenticateUser(String username, String password) throws FileNotFoundException, SQLException, UserNotFoundException {
+		return UserDAOImplementation.getUserDAO().authenticateUser(username, password);
 	}
 	
 	boolean registerUser(User user) throws FileNotFoundException {
@@ -41,7 +46,7 @@ public class UserServices {
 		return UserDAOImplementation.getUserDAO().calculateRank(highScore);
 	}
 	
-	void viewLeaderboard() {
+	void viewLeaderboard() throws FileNotFoundException, SQLException {
 		UserDAOImplementation.getUserDAO().viewLeaderboard();
 	}
 	
