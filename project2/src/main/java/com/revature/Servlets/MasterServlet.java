@@ -19,15 +19,15 @@ public class MasterServlet extends HttpServlet {
 	private final ObjectMapper mapper = new ObjectMapper();
 	final static Logger log = Logger.getLogger(MasterServlet.class);
 		
+	public MasterServlet() {
+		
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 		log.info("connected");
 		resp.setContentType("application/json");
 		try {
-			resp.setStatus(200);
-			resp.addHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-			resp.addHeader("Access-Control-Allow-Credentials", "true");
-			resp.addHeader("Access-Control-Allow-Methods", "POST");
 			resp.getWriter().append(mapper.writeValueAsString(MasterDispatcher.process(req, resp)));
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -48,4 +48,5 @@ public class MasterServlet extends HttpServlet {
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
+	
 }

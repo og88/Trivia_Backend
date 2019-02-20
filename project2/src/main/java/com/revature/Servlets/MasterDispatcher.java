@@ -27,6 +27,7 @@ public class MasterDispatcher {
 
 	public static Object process(HttpServletRequest req, HttpServletResponse resp)
 			throws SQLException, ServletException, IOException {
+		System.out.println("in dispatch " + req.getRequestURI().toString());
 		if (req.getRequestURI().contains("login")) {
 			User user = mapper.readValue(req.getReader(), User.class);
 			return UserServices.getUserServices().getUser(user);

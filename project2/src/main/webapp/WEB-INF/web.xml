@@ -4,12 +4,22 @@
 
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
-
+	<filter>
+		<filter-name>filter</filter-name>
+		<display-name>filter</display-name>
+		<description></description>
+		<filter-class>com.revature.filter.filter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filter</filter-name>
+		<url-pattern>/rest/*</url-pattern>
+	</filter-mapping>
 
 	<servlet>
 		<servlet-name>MServlet</servlet-name>
 		<servlet-class>com.revature.Servlets.MasterServlet</servlet-class>
 	</servlet>
+
 
 	<servlet-mapping>
 		<servlet-name>MServlet</servlet-name>

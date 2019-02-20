@@ -106,13 +106,14 @@ public class UserDAOImplementation implements UserDAO{
 			
 			ResultSet results = ps.executeQuery();
 			while (results.next()) {
-				System.out.println("found");
+				log.info("found");
 				return new User(
 					results.getString("USERNAME"),
 					results.getInt("EXPERIENCE"),
 					results.getInt("HIGH_SCORE"),
 					results.getString("EMAIL"));
 			}
+			log.warn("User not Found");
 			throw new UserNotFoundException("Not found");
 		}
 	}
@@ -162,19 +163,19 @@ public class UserDAOImplementation implements UserDAO{
 	@Override
 	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT * FROM TriviaUsers ORDER BY HIGH_SCORE";
+			String sql = "SELECT * from TriviaUsers ORDER BY high_score";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			List<User> scores = new ArrayList<>();
 			while(rs.next()) {
-				for (int i=0; i<5; i++) {
 					scores.add(new User(
 						rs.getString("USERNAME"),
-						rs.getInt("HIGH_SCORE")));
-				}
+						rs.getInt("EXPERIENCE"),
+						rs.getInt("HIGH_SCORE"),
+						rs.getString("EMAIL")));
 			}
+			return scores;
 		}
-		return null;
 	}
 
 	/*public User authenticateUser(String username, String password) throws UserNotFoundException, FileNotFoundException, SQLException {
