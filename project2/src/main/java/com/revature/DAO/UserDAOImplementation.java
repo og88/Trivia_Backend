@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,19 +34,22 @@ public class UserDAOImplementation implements UserDAO{
 	@Override
 	public boolean registerUser(User user) throws FileNotFoundException {
 		User newUser = user;
-
 		try ( Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "{call INSERT_USER (?,?,?)}";
+			String sql = "call INSERT_USER (?,?,?,?)";
 			CallableStatement ps = conn.prepareCall(sql);
 			ps.setString(1, newUser.getUsername());
 			ps.setString(2, newUser.getPassword());
 			ps.setString(3, newUser.getEmail());
-			
-			if(ps.executeUpdate() > 0) {
+			ps.registerOutParameter(4, Types.NUMERIC);
+			ps.executeUpdate();
+			int result = ps.getInt(4);
+			if(result > 0) {
+				log.info("Registration Success");
 				conn.close();
 				return true;
 			} 
 			else {
+				log.info("Registration Failure");
 				conn.close();
 				throw new SQLException();
 			}
@@ -87,31 +91,36 @@ public class UserDAOImplementation implements UserDAO{
 
 	
 	@Override
-	public User getUser(String username) throws SQLException {
+	public User getUser(User user) throws SQLException, UserNotFoundException {
+		//Is there a method to validate users? (Username/Password)
+		//Or are we just getting them by username?
+		log.info("Login attempt");
+		System.out.println(user.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT USERNAME, PASS, EXPERIENCE, HIGH_SCORE FROM TriviaUsers WHERE USERNAME = ?";
+			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers WHERE USERNAME = ? AND PASS = GET_USER_HASH(?,?)";
 			PreparedStatement ps = conn.prepareCall(sql);
-			ps.setString(1, username);
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getUsername());
+			ps.setString(3, user.getPassword());
+			
 			
 			ResultSet results = ps.executeQuery();
 			while (results.next()) {
+				System.out.println("found");
 				return new User(
 					results.getString("USERNAME"),
-					results.getString("PASS"),
 					results.getInt("EXPERIENCE"),
-					results.getInt("HIGH_SCORE"));
+					results.getInt("HIGH_SCORE"),
+					results.getString("EMAIL"));
 			}
-			conn.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throw new UserNotFoundException("Not found");
 		}
-		return null;
 	}
 
 	@Override
 	public List<User> getAllUsers() {
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE FROM TriviaUsers";
+			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers";
 			PreparedStatement ps = conn.prepareCall(sql);
 			
 			List<User> allEmployees = new ArrayList<>();
@@ -122,26 +131,36 @@ public class UserDAOImplementation implements UserDAO{
 				allEmployees.add(new User(
 					results.getString("USERNAME"), 
 					results.getInt("EXPERIENCE"),
-					results.getInt("HIGH_SCORE")));	
+					results.getInt("HIGH_SCORE"),
+					results.getString("EMAIL")));	
 			}
 				conn.close();
 				return allEmployees;
 				
-		}catch(FileNotFoundException | SQLException e) {
+		}catch( SQLException e) {
 			e.getStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	public int calculateRank(int highScore) {
+	public int calculateRank(int highScore) throws FileNotFoundException, SQLException {
 		//Need to know how rank is calculated
+		try (Connection conn = JDBCconnectionUtil.getConnection()) {
+		String sql = "SELECT COUNT(*)+1 FROM TriviaUsers WHERE high_score > ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, highScore);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()) {
+			return rs.getInt(1);
+		}
+		}
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public void viewLeaderboard() throws FileNotFoundException, SQLException {
+	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "SELECT * FROM TriviaUsers ORDER BY HIGH_SCORE";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -155,9 +174,10 @@ public class UserDAOImplementation implements UserDAO{
 				}
 			}
 		}
+		return null;
 	}
 
-	public User authenticateUser(String username, String password) throws UserNotFoundException, FileNotFoundException, SQLException {
+	/*public User authenticateUser(String username, String password) throws UserNotFoundException, FileNotFoundException, SQLException {
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "SELECT PASS FROM TriviaUsers WHERE USERNAME = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -184,6 +204,6 @@ public class UserDAOImplementation implements UserDAO{
 				throw new UserNotFoundException("Incorrect username or password");
 			}
 		}
-	}
+	}*/
 
 }

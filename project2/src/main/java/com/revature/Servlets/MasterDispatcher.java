@@ -7,7 +7,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.models.Question;
+import com.revature.models.User;
+import com.revature.services.QuestionServices;
+import com.revature.services.UserServices;
+
 public class MasterDispatcher {
+
+	private final static ObjectMapper mapper = new ObjectMapper();
+	final static Logger log = Logger.getLogger(MasterServlet.class);
 
 	private MasterDispatcher() {
 	}
@@ -15,11 +28,13 @@ public class MasterDispatcher {
 	public static Object process(HttpServletRequest req, HttpServletResponse resp)
 			throws SQLException, ServletException, IOException {
 		if (req.getRequestURI().contains("login")) {
-			return new String("Hello, World!");
-		} else if (req.getRequestURI().contains("rank/calculate")) {
-			return new String("Calculating rank");
-		} else if (req.getRequestURI().contains("leader")) {
-			return new String("Getting leaderboard");
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().getUser(user);
+		} else if (req.getRequestURI().contains("rank/calculate")) {//WORKS ************************************************************
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().calculateRank(user.getHighScore());
+		} else if (req.getRequestURI().contains("leader")) { ///////////////////////////////////////////////////////////
+			return UserServices.getUserServices().viewLeaderboard();
 		} else if (req.getRequestURI().contains("user")) {
 			return Users(req, resp);
 		} else if (req.getRequestURI().contains("question")) {
@@ -29,34 +44,49 @@ public class MasterDispatcher {
 		return null;
 	}
 
-	public static Object Users(HttpServletRequest req, HttpServletResponse resp) {
-		if (req.getRequestURI().contains("user/register")) {
-			return new StringBuffer("register a new user");
-		} else if (req.getRequestURI().contains("user/update")) {
-			return new StringBuffer("updating User");
-		} else if (req.getRequestURI().contains("score/update")) {
+	public static Object Users(HttpServletRequest req, HttpServletResponse resp)
+			throws JsonParseException, JsonMappingException, IOException, SQLException {
+		if (req.getRequestURI().contains("user/register")) {//WORKS ***********************************************
+			log.info("Registering new user");
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().registerUser(user);
+		} else if (req.getRequestURI().contains("user/update")) {////////////////////////////////
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().updateUser("username", user); // Need to find how to get old username
+		} else if (req.getRequestURI().contains("score/update")) {// needed
+																	// #####################################################################
 			return new StringBuffer("Updating String");
-		} else if (req.getRequestURI().contains("user/get")) {
-			return new StringBuffer("Get a specific User");
-		} else if (req.getRequestURI().contains("user/all")) {
-			return new StringBuffer("Getting all users");
+		} else if (req.getRequestURI().contains("user/get")) { //works ****************************************************
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().getUser(user);
+		} else if (req.getRequestURI().contains("user/all")) { //WORKS **************************************************************
+			log.info("Getting all users");
+			return UserServices.getUserServices().getAllUsers();
 		}
 		return null;
 	}
 
-	public static Object Questions(HttpServletRequest req, HttpServletResponse resp) {
-		if(req.getRequestURI().contains("question/insert")) {
-			return new StringBuffer("Inserting a question");
-		} else if (req.getRequestURI().contains("question/update")) {
+	public static Object Questions(HttpServletRequest req, HttpServletResponse resp)
+			throws JsonParseException, JsonMappingException, IOException {
+		if (req.getRequestURI().contains("question/insert")) {   ///////////////////////////////////////////////////
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().insertQuestion(question);
+		} else if (req.getRequestURI().contains("question/update")) { ///////////////////////////////////
+			Question question = mapper.readValue(req.getReader(), Question.class);
 			return new StringBuffer("Updating a question");
-		} else if (req.getRequestURI().contains("question/counter")) {
-			return new StringBuffer("Updating question counter");
-		} else if (req.getRequestURI().contains("question/get")) {
-			return new StringBuilder("Getting a specific question");
-		} else if (req.getRequestURI().contains("question/getCat")) {
-			return new StringBuilder("Getting questions by category");
-		} else if (req.getRequestURI().contains("stats")) {
-			return new StringBuilder("Getting Statistics");
+		} else if (req.getRequestURI().contains("question/counter")) { ////////////////////////////////////////
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().updateCounters(question.getQuestionID(),
+					question.getCorrectCount(), question.getIncorrectCount());
+		} else if (req.getRequestURI().contains("question/get")) { ///////////////////////////////////////////////
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().getQuestion(question.getQuestionID());
+		} else if (req.getRequestURI().contains("question/Cat")) { ///////////////////////////////////////////////
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().getQuestionsByCategory(question.getQuestionCategory());
+		} else if (req.getRequestURI().contains("stats")) { ///////////////////////////////////////////////////////////
+			Question question = mapper.readValue(req.getReader(), Question.class);
+			return QuestionServices.getQuestionServices().viewStatistics(question.getQuestionID());
 		}
 		return null;
 	}

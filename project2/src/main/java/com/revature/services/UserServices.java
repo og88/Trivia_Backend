@@ -4,11 +4,16 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.revature.DAO.UserDAOImplementation;
 import com.revature.customExceptions.UserNotFoundException;
 import com.revature.models.User;
 
 public class UserServices {
+	
+	final static Logger log = Logger.getLogger(UserServices.class);
+
 
 	private static UserServices userServices;
 	private UserServices() {
@@ -21,33 +26,45 @@ public class UserServices {
 		return userServices;
 	}
 	
-	User authenticateUser(String username, String password) throws FileNotFoundException, SQLException, UserNotFoundException {
+/*	User authenticateUser(String username, String password) throws FileNotFoundException, SQLException, UserNotFoundException {
 		return UserDAOImplementation.getUserDAO().authenticateUser(username, password);
-	}
+	}*/
 	
-	boolean registerUser(User user) throws FileNotFoundException {
+	public boolean registerUser(User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	
-	boolean updateUser(String username, User user) throws FileNotFoundException {
+	public boolean updateUser(String username, User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().updateUser(username, user);
 	}
 	
 	
-	User getUser(String username) throws SQLException {
-		return UserDAOImplementation.getUserDAO().getUser(username);
+	public User getUser(User user) throws SQLException {
+		try {
+			return UserDAOImplementation.getUserDAO().getUser(user);
+		} catch (UserNotFoundException e) {
+			log.error("User not found");
+		}
+		return null;
 	}
 	
-	List<User> getAllUsers() {
+	public List<User> getAllUsers() {
 		return UserDAOImplementation.getUserDAO().getAllUsers();
 	}
 	
-	int calculateRank(int highScore) {
-		return UserDAOImplementation.getUserDAO().calculateRank(highScore);
+	public int calculateRank(int highScore) {
+		try {
+			return UserDAOImplementation.getUserDAO().calculateRank(highScore);
+		} catch (FileNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 	
-	void viewLeaderboard() throws FileNotFoundException, SQLException {
-		UserDAOImplementation.getUserDAO().viewLeaderboard();
+	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
+		return UserDAOImplementation.getUserDAO().viewLeaderboard();
+
 	}
 	
 }
