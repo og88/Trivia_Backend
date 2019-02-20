@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.revature.DAO.QuestionDAOImplementation;
@@ -20,7 +21,13 @@ public class QuestionServices {
 	}
 	
 	public boolean insertQuestion(Question question) {
-		return QuestionDAOImplementation.getQuestionDAO().insertQuestion(question);
+		try {
+			return QuestionDAOImplementation.getQuestionDAO().insertQuestion(question);
+		} catch (FileNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public boolean updateQuestion(int questionID, Question question) {

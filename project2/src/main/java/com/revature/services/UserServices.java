@@ -29,8 +29,8 @@ public class UserServices {
 	}
 	
 	
-	public User getUser(String username) throws SQLException {
-		return UserDAOImplementation.getUserDAO().getUser(username);
+	public User getUser(User user) throws SQLException {
+		return UserDAOImplementation.getUserDAO().getUser(user);
 	}
 	
 	public List<User> getAllUsers() {

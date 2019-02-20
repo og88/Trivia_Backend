@@ -90,33 +90,37 @@ public class UserDAOImplementation implements UserDAO{
 
 	
 	@Override
-	public User getUser(String username) throws SQLException {
+	public User getUser(User user) throws SQLException {
 		//Is there a method to validate users? (Username/Password)
 		//Or are we just getting them by username?
+		log.info("Login attempt");
+		System.out.println(user.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE FROM TriviaUsers WHERE USERNAME = ?";
+			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers WHERE USERNAME = ? AND PASS = GET_USER_HASH(?,?)";
 			PreparedStatement ps = conn.prepareCall(sql);
-			ps.setString(1, username);
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getUsername());
+			ps.setString(3, user.getPassword());
+			
 			
 			ResultSet results = ps.executeQuery();
 			while (results.next()) {
+				System.out.println("found");
 				return new User(
 					results.getString("USERNAME"), 
 					results.getInt("EXPERIENCE"),
-					results.getInt("HIGH_SCORE"));
+					results.getInt("HIGH_SCORE"),
+					results.getString("EMAIL"));
 			}
 			conn.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return null;
+		return new User();
 	}
 
 	@Override
 	public List<User> getAllUsers() {
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE FROM TriviaUsers";
+			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers";
 			PreparedStatement ps = conn.prepareCall(sql);
 			
 			List<User> allEmployees = new ArrayList<>();
@@ -127,12 +131,13 @@ public class UserDAOImplementation implements UserDAO{
 				allEmployees.add(new User(
 					results.getString("USERNAME"), 
 					results.getInt("EXPERIENCE"),
-					results.getInt("HIGH_SCORE")));	
+					results.getInt("HIGH_SCORE"),
+					results.getString("EMAIL")));	
 			}
 				conn.close();
 				return allEmployees;
 				
-		}catch(FileNotFoundException | SQLException e) {
+		}catch( SQLException e) {
 			e.getStackTrace();
 		}
 		return null;

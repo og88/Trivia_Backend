@@ -27,9 +27,9 @@ public class MasterDispatcher {
 
 	public static Object process(HttpServletRequest req, HttpServletResponse resp)
 			throws SQLException, ServletException, IOException {
-		if (req.getRequestURI().contains("login")) { // needed
-														// #####################################################################
-			return new String("Hello, World!");
+		if (req.getRequestURI().contains("login")) {
+			User user = mapper.readValue(req.getReader(), User.class);
+			return UserServices.getUserServices().getUser(user);
 		} else if (req.getRequestURI().contains("rank/calculate")) {//WORKS ************************************************************
 			User user = mapper.readValue(req.getReader(), User.class);
 			return UserServices.getUserServices().calculateRank(user.getHighScore());
@@ -58,7 +58,7 @@ public class MasterDispatcher {
 			return new StringBuffer("Updating String");
 		} else if (req.getRequestURI().contains("user/get")) { //works ****************************************************
 			User user = mapper.readValue(req.getReader(), User.class);
-			return UserServices.getUserServices().getUser(user.getUsername());
+			return UserServices.getUserServices().getUser(user);
 		} else if (req.getRequestURI().contains("user/all")) { //WORKS **************************************************************
 			log.info("Getting all users");
 			return UserServices.getUserServices().getAllUsers();

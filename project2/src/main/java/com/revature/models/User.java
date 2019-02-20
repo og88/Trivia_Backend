@@ -22,10 +22,11 @@ public class User {
 		this.highScore = highScore;
 	}
 
-	public User(String username, int experience, int highScore) {
+	public User(String username, int experience, int highScore, String email) {
 		this.username = username;
 		this.experience = experience;
 		this.highScore = highScore;
+		this.email = email;
 	}
 
 	public String getUsername() {
