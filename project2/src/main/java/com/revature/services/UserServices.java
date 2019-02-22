@@ -34,8 +34,8 @@ public class UserServices {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	
-	public boolean updateUser(String username, User user) throws FileNotFoundException {
-		return UserDAOImplementation.getUserDAO().updateUser(username, user);
+	public boolean updateUser(User user) throws FileNotFoundException {
+		return UserDAOImplementation.getUserDAO().updateUser(user);
 	}
 	
 	

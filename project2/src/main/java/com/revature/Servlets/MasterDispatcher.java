@@ -53,7 +53,7 @@ public class MasterDispatcher {
 			return UserServices.getUserServices().registerUser(user);
 		} else if (req.getRequestURI().contains("user/update")) {////////////////////////////////
 			User user = mapper.readValue(req.getReader(), User.class);
-			return UserServices.getUserServices().updateUser("username", user); // Need to find how to get old username
+			return UserServices.getUserServices().updateUser(user); // Need to find how to get old username
 		} else if (req.getRequestURI().contains("score/update")) {// needed
 																	// #####################################################################
 			return new StringBuffer("Updating String");
