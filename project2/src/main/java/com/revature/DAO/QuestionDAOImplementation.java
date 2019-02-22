@@ -31,6 +31,7 @@ public class QuestionDAOImplementation implements QuestionDAO {
 
 	@Override
 	public boolean insertQuestion(Question question) throws FileNotFoundException, SQLException {
+		System.out.println(question.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "CALL INSERT_QUESTION(?,?,?,?,?,?,?)";
 			CallableStatement cs = conn.prepareCall(sql);
@@ -61,53 +62,19 @@ public class QuestionDAOImplementation implements QuestionDAO {
 	}
 
 	@Override
-	public boolean updateCounters(int questionID, int correctCount, int incorrectCount) throws FileNotFoundException {
+	public boolean updateCounters(Question question) throws FileNotFoundException {
+		System.out.println(question.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT CORRECT_COUNT, INCORRECT_COUNT FROM Questions WHERE QUESTION_ID = (?)";
-			String update;
-			int correct = 0;
-			int incorrect = 0;
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, questionID);
-			ResultSet rs = ps.executeQuery();
+			String sql = "CALL UPDATE_COUNT(?, ?,?,?,?,?)";
+			PreparedStatement ps = conn.prepareCall(sql);
+			ps.setInt(1, question.getQuestionID());
+			ps.setString(2, question.getQuestion());
+			ps.setString(3, question.getQuestionCategory());
+			ps.setInt(4, question.getCorrectCount());
+			ps.setInt(5,question.getIncorrectCount());
+			ps.setInt(6, question.getDifficulty());
+			ps.execute();
 
-			while (rs.next()) {
-				correct = rs.getInt("CORRECT_COUNT");
-				incorrect = rs.getInt("INCORRECT_COUNT");
-			}
-
-			if (correctCount > 0) { // answered correctly
-				update = "UPDATE Questions SET CORRECT_COUNT = (?) WHERE QUESTION_ID = (?)";
-				ps = conn.prepareStatement(update);
-				correct += 1;
-				ps.setInt(1, correct);
-				ps.setInt(2, questionID);
-
-				if (ps.executeUpdate() > 0) {
-					conn.close();
-					return true;
-				} else {
-					conn.close();
-					throw new SQLException();
-				}
-			} else if (incorrectCount > 0) { // answered incorrectly
-				update = "UPDATE Questions SET INCORRECT_COUNT = (?) WHERE QUESTION_ID = (?)";
-				ps = conn.prepareStatement(update);
-				ps.close();
-				incorrect += 1;
-				ps.setInt(1, incorrect);
-				ps.setInt(2, questionID);
-
-				if (ps.executeUpdate() > 0) {
-					conn.close();
-					return true;
-				} else {
-					conn.close();
-					throw new SQLException();
-				}
-			} else {
-				return true; // Question skipped, no correct or incorrect updates
-			}
 
 		} catch (SQLException e) {
 			log.error(e.getMessage());

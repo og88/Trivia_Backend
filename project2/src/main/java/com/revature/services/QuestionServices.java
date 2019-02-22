@@ -35,8 +35,12 @@ public class QuestionServices {
 	}
 	
 
-	public boolean updateCounters(int questionID, int correctCount, int incorrectCount) throws FileNotFoundException {
-		return QuestionDAOImplementation.getQuestionDAO().updateCounters(questionID, correctCount, incorrectCount);
+	public boolean updateCounters(Question[] questions) throws FileNotFoundException {
+		boolean resp = false;
+		for(Question question : questions) {
+			resp = QuestionDAOImplementation.getQuestionDAO().updateCounters(question);
+		}
+		return resp;
 	}
 	
 	public Question getQuestion(int questionID) {

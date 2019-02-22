@@ -10,7 +10,7 @@ public interface QuestionDAO {
 
 	boolean insertQuestion(Question question) throws FileNotFoundException, SQLException;
 	boolean updateQuestion(int questionID, Question question);
-	boolean updateCounters(int questionID, int correctCount, int incorrectCount) throws FileNotFoundException;
+	boolean updateCounters(Question question) throws FileNotFoundException;
 	Question getQuestion(int questionID);
 	List<Question> getQuestionsByCategory(String questionCategory);
 	Object viewStatistics(int questionID);

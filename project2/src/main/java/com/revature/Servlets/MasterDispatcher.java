@@ -76,9 +76,10 @@ public class MasterDispatcher {
 			Question question = mapper.readValue(req.getReader(), Question.class);
 			return new StringBuffer("Updating a question");
 		} else if (req.getRequestURI().contains("question/counter")) { ////////////////////////////////////////
-			Question question = mapper.readValue(req.getReader(), Question.class);
-			return QuestionServices.getQuestionServices().updateCounters(question.getQuestionID(),
-					question.getCorrectCount(), question.getIncorrectCount());
+			
+			//Question question = mapper.readValue(req.getReader(), Question.class);
+			Question[] question = mapper.readValue(req.getReader(), Question[].class);
+			return QuestionServices.getQuestionServices().updateCounters(question);
 		} else if (req.getRequestURI().contains("question/get")) { ///////////////////////////////////////////////
 			Question question = mapper.readValue(req.getReader(), Question.class);
 			return QuestionServices.getQuestionServices().getQuestion(question.getQuestionID());
