@@ -69,17 +69,31 @@ public class UserDAOImplementation implements UserDAO {
 	}
 
 	@Override  
-	public boolean updateUser(String username, User user) throws FileNotFoundException {
-		User updateUser = user;
+	public boolean updateUser(User user) {
+		User updatedUser = user;
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			//need name of procedure if there is one
-			String sql = "UPDATE TriviaUsers SET USERNAME = (?), PASS = (?), EMAIL = (?), HIGH_SCORE = (?) WHERE USERNAME = (?)";
+			log.info("in update");
+			System.out.println(updatedUser);
+			System.out.println(updatedUser.getUsername());
+			System.out.println(updatedUser.getPassword());
+			//hashing password again to match new username/password combo
+			String hash = "{ ? = call GET_USER_HASH(?,?) }";
+			CallableStatement cs = conn.prepareCall(hash);
+			cs.setString(2,  updatedUser.getUsername());
+			cs.setString(3,  updatedUser.getPassword());
+			cs.registerOutParameter(1, java.sql.Types.VARCHAR);
+				log.info("before execute");
+			cs.execute();
+				log.info("after execute");
+			updatedUser.setPassword(cs.getString(1));
+			System.out.println("updatedUser.getPassword()");
+			
+			String sql = "UPDATE TriviaUsers SET USERNAME = (?), PASS = (?), EMAIL = (?) WHERE USERNAME = (?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, updateUser.getUsername());
-			ps.setString(2, updateUser.getPassword());
-			ps.setString(3, updateUser.getEmail());
-			ps.setInt(4, updateUser.getHighScore());
-			ps.setString(5, username);
+			ps.setString(1, updatedUser.getUsername());
+			ps.setString(2, updatedUser.getPassword());
+			ps.setString(3, updatedUser.getEmail());
+			ps.setString(4, updatedUser.getTempUsername());
 			
 				if(ps.executeUpdate() > 0) {
 					conn.close();
