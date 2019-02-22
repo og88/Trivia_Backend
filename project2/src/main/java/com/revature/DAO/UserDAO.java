@@ -9,7 +9,7 @@ import com.revature.models.User;
 
 public interface UserDAO {
 	
-	boolean registerUser(User user) throws FileNotFoundException;
+	User registerUser(User user) throws FileNotFoundException;
 	boolean updateUser(String username, User user) throws FileNotFoundException;
 	User getUser(User user) throws SQLException, UserNotFoundException;
 	List<User> getAllUsers();

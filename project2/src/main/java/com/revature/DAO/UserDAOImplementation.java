@@ -10,16 +10,23 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import org.apache.log4j.Logger;
 
 import com.revature.customExceptions.UserNotFoundException;
 import com.revature.models.User;
+import com.revature.services.UserServices;
 import com.revature.util.JDBCconnectionUtil;
 
-public class UserDAOImplementation implements UserDAO{
+public class UserDAOImplementation implements UserDAO {
 
 	private static UserDAOImplementation userDAO;
 	final static Logger log = Logger.getLogger(UserDAOImplementation.class);
+	
 	private UserDAOImplementation() {
 	}
 	
@@ -32,7 +39,7 @@ public class UserDAOImplementation implements UserDAO{
 	
 	
 	@Override
-	public boolean registerUser(User user) throws FileNotFoundException {
+	public User registerUser(User user) throws FileNotFoundException {
 		User newUser = user;
 		try ( Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "call INSERT_USER (?,?,?,?)";
@@ -46,7 +53,7 @@ public class UserDAOImplementation implements UserDAO{
 			if(result > 0) {
 				log.info("Registration Success");
 				conn.close();
-				return true;
+				return UserServices.getUserServices().getUser(user);
 			} 
 			else {
 				log.info("Registration Failure");
@@ -58,7 +65,7 @@ public class UserDAOImplementation implements UserDAO{
 			e.getStackTrace();
 		}
 		
-		return false;
+		return new User();
 	}
 
 	@Override  
@@ -97,7 +104,8 @@ public class UserDAOImplementation implements UserDAO{
 		log.info("Login attempt");
 		System.out.println(user.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers WHERE USERNAME = ? AND PASS = GET_USER_HASH(?,?)";
+		//try(Connection conn = dataSource.getConnection()){	
+		String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers WHERE USERNAME = ? AND PASS = GET_USER_HASH(?,?)";
 			PreparedStatement ps = conn.prepareCall(sql);
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getUsername());
@@ -163,7 +171,7 @@ public class UserDAOImplementation implements UserDAO{
 	@Override
 	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT * from TriviaUsers ORDER BY high_score";
+			String sql = "SELECT * from TriviaUsers ORDER BY high_score DESC";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			List<User> scores = new ArrayList<>();
