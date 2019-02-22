@@ -4,16 +4,16 @@ public class UserMemento {
 
 	private String username;
 	private String password;
-	private String tempPassword;
+	private String tempUserName;
 	private String email;
 	private int experience;
 	private int highScore;
 
-	public UserMemento(String username, String password, String tempPassword, String email, int experience, int highScore) {
+	public UserMemento(String username, String password, String tempUserName, String email, int experience, int highScore) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.tempPassword = tempPassword;
+		this.tempUserName = tempUserName;
 		this.email = email;
 		this.experience = experience;
 		this.highScore = highScore;
@@ -27,8 +27,8 @@ public class UserMemento {
 		return password;
 	}
 
-	public String getTempPassword() {
-		return tempPassword;
+	public String gettempUserName() {
+		return tempUserName;
 	}
 
 	public String getEmail() {
@@ -45,7 +45,7 @@ public class UserMemento {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", tempPassword=" + tempPassword + ", email="
+		return "User [username=" + username + ", password=" + password + ", tempUserName=" + tempUserName + ", email="
 				+ email + ", experience=" + experience + ", highScore=" + highScore + "]";
 	}
 
@@ -57,7 +57,7 @@ public class UserMemento {
 		result = prime * result + experience;
 		result = prime * result + highScore;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((tempPassword == null) ? 0 : tempPassword.hashCode());
+		result = prime * result + ((tempUserName == null) ? 0 : tempUserName.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -85,10 +85,10 @@ public class UserMemento {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (tempPassword == null) {
-			if (other.tempPassword != null)
+		if (tempUserName == null) {
+			if (other.tempUserName != null)
 				return false;
-		} else if (!tempPassword.equals(other.tempPassword))
+		} else if (!tempUserName.equals(other.tempUserName))
 			return false;
 		if (username == null) {
 			if (other.username != null)

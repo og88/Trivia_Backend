@@ -12,11 +12,11 @@ public class User {
 		super();
 	}
 
-	public User(String username, String password, String tempPassword, String email, int experience, int highScore) {
+	public User(String username, String password, String tempUserName, String email, int experience, int highScore) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.tempUserName = tempPassword;
+		this.tempUserName = tempUserName;
 		this.email = email;
 		this.experience = experience;
 		this.highScore = highScore;
@@ -61,8 +61,8 @@ public class User {
 		return tempUserName;
 	}
 
-	public void setTempUsername(String tempPassword) {
-		this.tempUserName = tempPassword;
+	public void setTempUsername(String tempUserName) {
+		this.tempUserName = tempUserName;
 	}
 
 	public String getEmail() {
@@ -91,7 +91,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", tempPassword=" + tempUserName + ", email="
+		return "User [username=" + username + ", password=" + password + ", tempUserName=" + tempUserName + ", email="
 				+ email + ", experience=" + experience + ", highScore=" + highScore + "]";
 	}
 
@@ -154,7 +154,7 @@ public class User {
 		
 		this.username = memento.getUsername();
 		this.password = memento.getPassword();
-		this.tempUserName = memento.getTempPassword();
+		this.tempUserName = memento.gettempUserName();
 		this.email = memento.getEmail();
 		this.experience = memento.getExperience();
 		this.highScore = memento.getHighScore();
