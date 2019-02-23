@@ -25,7 +25,6 @@
 		<servlet-name>MServlet</servlet-name>
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
-
 	<resource-ref>
 		<res-ref-name>
 			jdbc/PaceCPDemo

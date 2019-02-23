@@ -64,7 +64,6 @@ public class UserDAOImplementation implements UserDAO {
 		catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
 		return new User();
 	}
 
@@ -198,6 +197,7 @@ public class UserDAOImplementation implements UserDAO {
 			return scores;
 		}
 	}
+<<<<<<< HEAD
 
 	@Override
 	public User updateScore(User user) throws SQLException, UserNotFoundException {
@@ -211,4 +211,6 @@ public class UserDAOImplementation implements UserDAO {
 		return UserDAOImplementation.getUserDAO().getUser(user);
 		}
 	}
+=======
+>>>>>>> Development
 }
