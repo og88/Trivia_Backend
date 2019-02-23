@@ -1,6 +1,5 @@
 package com.revature.DAO;
 
-import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +29,7 @@ public class QuestionDAOImplementation implements QuestionDAO {
 	}
 
 	@Override
-	public boolean insertQuestion(Question question) throws FileNotFoundException, SQLException {
+	public boolean insertQuestion(Question question) {
 		System.out.println(question.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "CALL INSERT_QUESTION(?,?,?,?,?,?,?)";
@@ -47,11 +46,11 @@ public class QuestionDAOImplementation implements QuestionDAO {
 			if (result > 0) {
 				log.info("Question inserted successfuly");
 				return true;
-			} else {
-				return false;
 			}
+		} catch (SQLException e) {
+			log.info(e);
 		}
-
+		return false;
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public class QuestionDAOImplementation implements QuestionDAO {
 	}
 
 	@Override
-	public boolean updateCounters(Question question) throws FileNotFoundException {
+	public boolean updateCounters(Question question) {
 		System.out.println(question.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "CALL UPDATE_COUNT(?, ?,?,?,?,?)";

@@ -1,13 +1,11 @@
 package com.revature.services;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.revature.DAO.UserDAOImplementation;
-import com.revature.customExceptions.UserNotFoundException;
 import com.revature.models.User;
 
 public class UserServices {
@@ -27,33 +25,21 @@ public class UserServices {
 	}
 	
 	public User updateScore(User user) {
-		try {
-			return UserDAOImplementation.getUserDAO().updateScore(user);
-		} catch (SQLException e) {
-//			e.printStackTrace();
-		} catch (UserNotFoundException e) {
-			//e.printStackTrace();
-		}
-		return new User();
+		return UserDAOImplementation.getUserDAO().updateScore(user);
 		
 	}
 	
-	public User registerUser(User user) throws FileNotFoundException {
+	public User registerUser(User user) {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	
-	public boolean updateUser(User user) throws FileNotFoundException {
+	public boolean updateUser(User user) {
 		return UserDAOImplementation.getUserDAO().updateUser(user);
 	}
 	
 	
 	public User getUser(User user) throws SQLException {
-		try {
-			return UserDAOImplementation.getUserDAO().getUser(user);
-		} catch (UserNotFoundException e) {
-			log.error("User not found");
-		}
-		return null;
+		return UserDAOImplementation.getUserDAO().getUser(user);
 	}
 	
 	public List<User> getAllUsers() {
@@ -61,17 +47,11 @@ public class UserServices {
 	}
 	
 	public int calculateRank(int highScore) {
-		try {
-			return UserDAOImplementation.getUserDAO().calculateRank(highScore);
-		} catch (FileNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
+		return UserDAOImplementation.getUserDAO().calculateRank(highScore);
 	}
 	
-	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
+	public Object viewLeaderboard() {
 		return UserDAOImplementation.getUserDAO().viewLeaderboard();
-
 	}
 	
 }

@@ -39,7 +39,7 @@ public class UserDAOImplementation implements UserDAO {
 	
 	
 	@Override
-	public User registerUser(User user) throws FileNotFoundException {
+	public User registerUser(User user) {
 		User newUser = user;
 		try ( Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "call INSERT_USER (?,?,?,?)";
@@ -51,25 +51,23 @@ public class UserDAOImplementation implements UserDAO {
 			ps.executeUpdate();
 			int result = ps.getInt(4);
 			if(result > 0) {
-				log.info("Registration Success");
-				conn.close();
+				log.info("Registration Success");	
 				return UserServices.getUserServices().getUser(user);
 			} 
 			else {
-				log.info("Registration Failure");
-				conn.close();
-				throw new SQLException();
+				log.info("Registration Failure");	
 			}
 		}
 		catch (SQLException e) {
-			e.getStackTrace();
+			e.printStackTrace();
+			log.info(e);
 		}
 		
 		return new User();
 	}
 
 	@Override  
-	public boolean updateUser(User user) {
+	public boolean updateUser(User user) { 
 		User updatedUser = user;
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			log.info("in update");
@@ -86,7 +84,6 @@ public class UserDAOImplementation implements UserDAO {
 			cs.execute();
 				log.info("after execute");
 			updatedUser.setPassword(cs.getString(1));
-			System.out.println("updatedUser.getPassword()");
 			
 			String sql = "UPDATE TriviaUsers SET USERNAME = (?), PASS = (?), EMAIL = (?) WHERE USERNAME = (?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -96,29 +93,25 @@ public class UserDAOImplementation implements UserDAO {
 			ps.setString(4, updatedUser.getTempUsername());
 			
 				if(ps.executeUpdate() > 0) {
-					conn.close();
 					return true;
 				} 
 				else {
-					conn.close();
 					throw new SQLException();
 				}
 		}
 		catch (SQLException e) {
-			e.getStackTrace();
+			e.printStackTrace();
+			log.info(e);
 		}
 		return false;
 	}
 
 	
 	@Override
-	public User getUser(User user) throws SQLException, UserNotFoundException {
-		//Is there a method to validate users? (Username/Password)
-		//Or are we just getting them by username?
+	public User getUser(User user) {
 		log.info("Login attempt");
 		System.out.println(user.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-		//try(Connection conn = dataSource.getConnection()){	
 		String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers WHERE USERNAME = ? AND PASS = GET_USER_HASH(?,?)";
 			PreparedStatement ps = conn.prepareCall(sql);
 			ps.setString(1, user.getUsername());
@@ -136,8 +129,12 @@ public class UserDAOImplementation implements UserDAO {
 					results.getString("EMAIL"));
 			}
 			log.warn("User not Found");
-			throw new UserNotFoundException("Not found");
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			log.info(e);
 		}
+		return null;
 	}
 
 	@Override
@@ -161,28 +158,33 @@ public class UserDAOImplementation implements UserDAO {
 				return allEmployees;
 				
 		}catch( SQLException e) {
-			e.getStackTrace();
+			e.printStackTrace();
+			log.info(e);
 		}
 		return null;
 	}
 
 	@Override
-	public int calculateRank(int highScore) throws FileNotFoundException, SQLException {
-		//Need to know how rank is calculated
+	public int calculateRank(int highScore) {
+		
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 		String sql = "SELECT COUNT(*)+1 FROM TriviaUsers WHERE high_score > ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, highScore);
 		ResultSet rs = ps.executeQuery();
-		while(rs.next()) {
-			return rs.getInt(1);
-		}
+		
+			while(rs.next()) {
+				return rs.getInt(1);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			log.info(e);
 		}
 		return 0;
 	}
 
 	@Override
-	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
+	public Object viewLeaderboard() {
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "SELECT * from TriviaUsers ORDER BY high_score DESC";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -196,11 +198,15 @@ public class UserDAOImplementation implements UserDAO {
 						rs.getString("EMAIL")));
 			}
 			return scores;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			log.info(e);
 		}
+		return null;
 	}
 
 	@Override
-	public User updateScore(User user) throws SQLException, UserNotFoundException {
+	public User updateScore(User user) {
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
 		String sql = "CALL UPDATE_SCORE(?,?,?)";
 		CallableStatement cs = conn.prepareCall(sql);
@@ -208,7 +214,10 @@ public class UserDAOImplementation implements UserDAO {
 		cs.setInt(2, user.getExperience());
 		cs.setInt(3, user.getHighScore());
 		cs.execute();
-		return UserDAOImplementation.getUserDAO().getUser(user);
+		return new User();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 }

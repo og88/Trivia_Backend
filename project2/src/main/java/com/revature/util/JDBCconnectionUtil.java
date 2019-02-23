@@ -1,5 +1,6 @@
 package com.revature.util;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +15,7 @@ public class JDBCconnectionUtil {
 	private static final Logger log = LogManager.getLogger(ConnectionUtil.class);
 	
 	//JDBC  - java database connectivity
-	public  static Connection getConnection() throws SQLException {
+	public  static Connection getConnection() {
 		try {
 			Properties props = new Properties();
 			
