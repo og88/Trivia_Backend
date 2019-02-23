@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource name="jdbc/PaceCPDemo" 
+	auth="Container"
+		type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+		testWhileIdle="true"
+		maxActive="100"
+		midIdle="10"
+		jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;
+            org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+		username="Programmer" 
+		password="p4ssw0rd"
+		driverClassName="oracle.jdbc.OracleDriver" 
+		url="jdbc:oracle:thin:@garcia-1901rds.csnuq8ktjehc.us-east-2.rds.amazonaws.com:1521:RDS1901" />
+</Context>
