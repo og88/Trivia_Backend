@@ -37,6 +37,8 @@ public class MasterDispatcher {
 			return UserServices.getUserServices().calculateRank(user.getHighScore());
 		} else if (req.getRequestURI().contains("leader")) { ///////////////////////////////////////////////////////////
 			return UserServices.getUserServices().viewLeaderboard();
+		}  else if (req.getRequestURI().contains("questions")) { ///////////////////////////////////////////////////////////
+			return QuestionServices.getQuestionServices().getQuestions();
 		} else if (req.getRequestURI().contains("user")) {
 			return Users(req, resp);
 		} else if (req.getRequestURI().contains("question")) {

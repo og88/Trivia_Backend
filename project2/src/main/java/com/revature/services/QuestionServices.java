@@ -53,5 +53,8 @@ public class QuestionServices {
 		return QuestionDAOImplementation.getQuestionDAO().verifyAnswer(givenAnswer, correctAnswer);
 	}
 	
+	public List<Question> getQuestions() {
+		return QuestionDAOImplementation.getQuestionDAO().getQuestions();
+	}
 	
 }
