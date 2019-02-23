@@ -39,7 +39,11 @@ public class UserDAOImplementation implements UserDAO {
 	
 	
 	@Override
+<<<<<<< HEAD
 	public User registerUser(User user) {
+=======
+	public User registerUser(User user) throws FileNotFoundException {
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		User newUser = user;
 		try ( Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "call INSERT_USER (?,?,?,?)";
@@ -51,6 +55,7 @@ public class UserDAOImplementation implements UserDAO {
 			ps.executeUpdate();
 			int result = ps.getInt(4);
 			if(result > 0) {
+<<<<<<< HEAD
 				log.info("Registration Success");	
 				return UserServices.getUserServices().getUser(user);
 			} 
@@ -61,13 +66,31 @@ public class UserDAOImplementation implements UserDAO {
 		catch (SQLException e) {
 			e.printStackTrace();
 			log.info(e);
+=======
+				log.info("Registration Success");
+				conn.close();
+				return UserServices.getUserServices().getUser(user);
+			} 
+			else {
+				log.info("Registration Failure");
+				conn.close();
+				throw new SQLException();
+			}
+		}
+		catch (SQLException e) {
+			e.getStackTrace();
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		}
 		
 		return new User();
 	}
 
 	@Override  
+<<<<<<< HEAD
 	public boolean updateUser(User user) { 
+=======
+	public boolean updateUser(User user) {
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		User updatedUser = user;
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			log.info("in update");
@@ -84,6 +107,10 @@ public class UserDAOImplementation implements UserDAO {
 			cs.execute();
 				log.info("after execute");
 			updatedUser.setPassword(cs.getString(1));
+<<<<<<< HEAD
+=======
+			System.out.println("updatedUser.getPassword()");
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 			
 			String sql = "UPDATE TriviaUsers SET USERNAME = (?), PASS = (?), EMAIL = (?) WHERE USERNAME = (?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -93,25 +120,47 @@ public class UserDAOImplementation implements UserDAO {
 			ps.setString(4, updatedUser.getTempUsername());
 			
 				if(ps.executeUpdate() > 0) {
+<<<<<<< HEAD
 					return true;
 				} 
 				else {
+=======
+					conn.close();
+					return true;
+				} 
+				else {
+					conn.close();
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 					throw new SQLException();
 				}
 		}
 		catch (SQLException e) {
+<<<<<<< HEAD
 			e.printStackTrace();
 			log.info(e);
+=======
+			e.getStackTrace();
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		}
 		return false;
 	}
 
 	
 	@Override
+<<<<<<< HEAD
 	public User getUser(User user) {
 		log.info("Login attempt");
 		System.out.println(user.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
+=======
+	public User getUser(User user) throws SQLException, UserNotFoundException {
+		//Is there a method to validate users? (Username/Password)
+		//Or are we just getting them by username?
+		log.info("Login attempt");
+		System.out.println(user.toString());
+		try (Connection conn = JDBCconnectionUtil.getConnection()) {
+		//try(Connection conn = dataSource.getConnection()){	
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		String sql = "SELECT USERNAME, EXPERIENCE, HIGH_SCORE, EMAIL FROM TriviaUsers WHERE USERNAME = ? AND PASS = GET_USER_HASH(?,?)";
 			PreparedStatement ps = conn.prepareCall(sql);
 			ps.setString(1, user.getUsername());
@@ -129,12 +178,17 @@ public class UserDAOImplementation implements UserDAO {
 					results.getString("EMAIL"));
 			}
 			log.warn("User not Found");
+<<<<<<< HEAD
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
 			log.info(e);
 		}
 		return null;
+=======
+			throw new UserNotFoundException("Not found");
+		}
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 	}
 
 	@Override
@@ -158,20 +212,30 @@ public class UserDAOImplementation implements UserDAO {
 				return allEmployees;
 				
 		}catch( SQLException e) {
+<<<<<<< HEAD
 			e.printStackTrace();
 			log.info(e);
+=======
+			e.getStackTrace();
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		}
 		return null;
 	}
 
 	@Override
+<<<<<<< HEAD
 	public int calculateRank(int highScore) {
 		
+=======
+	public int calculateRank(int highScore) throws FileNotFoundException, SQLException {
+		//Need to know how rank is calculated
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 		String sql = "SELECT COUNT(*)+1 FROM TriviaUsers WHERE high_score > ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
 		ps.setInt(1, highScore);
 		ResultSet rs = ps.executeQuery();
+<<<<<<< HEAD
 		
 			while(rs.next()) {
 				return rs.getInt(1);
@@ -179,12 +243,21 @@ public class UserDAOImplementation implements UserDAO {
 		}catch (SQLException e) {
 			e.printStackTrace();
 			log.info(e);
+=======
+		while(rs.next()) {
+			return rs.getInt(1);
+		}
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		}
 		return 0;
 	}
 
 	@Override
+<<<<<<< HEAD
 	public Object viewLeaderboard() {
+=======
+	public Object viewLeaderboard() throws FileNotFoundException, SQLException {
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "SELECT * from TriviaUsers ORDER BY high_score DESC";
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -198,6 +271,7 @@ public class UserDAOImplementation implements UserDAO {
 						rs.getString("EMAIL")));
 			}
 			return scores;
+<<<<<<< HEAD
 		}catch (SQLException e) {
 			e.printStackTrace();
 			log.info(e);
@@ -207,6 +281,13 @@ public class UserDAOImplementation implements UserDAO {
 
 	@Override
 	public User updateScore(User user) {
+=======
+		}
+	}
+
+	@Override
+	public User updateScore(User user) throws SQLException, UserNotFoundException {
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		try(Connection conn = JDBCconnectionUtil.getConnection()) {
 		String sql = "CALL UPDATE_SCORE(?,?,?)";
 		CallableStatement cs = conn.prepareCall(sql);
@@ -214,10 +295,15 @@ public class UserDAOImplementation implements UserDAO {
 		cs.setInt(2, user.getExperience());
 		cs.setInt(3, user.getHighScore());
 		cs.execute();
+<<<<<<< HEAD
 		return new User();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
+=======
+		return UserDAOImplementation.getUserDAO().getUser(user);
+		}
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 	}
 }

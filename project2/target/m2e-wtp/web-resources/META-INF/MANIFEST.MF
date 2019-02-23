@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: tommy
 Build-Jdk: 1.8.0_191
+=======
+Built-By: omarg
+Build-Jdk: 1.8.0_201
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 Created-By: Maven Integration for Eclipse
 

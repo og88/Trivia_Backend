@@ -1,5 +1,9 @@
 package com.revature.DAO;
 
+<<<<<<< HEAD
+=======
+import java.io.FileNotFoundException;
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +35,11 @@ public class QuestionDAOImplementation implements QuestionDAO {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public boolean insertQuestion(Question question) {
+=======
+	public boolean insertQuestion(Question question) throws FileNotFoundException, SQLException {
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		System.out.println(question.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "CALL INSERT_QUESTION(?,?,?,?,?,?,?)";
@@ -48,11 +56,19 @@ public class QuestionDAOImplementation implements QuestionDAO {
 			if (result > 0) {
 				log.info("Question inserted successfuly");
 				return true;
+<<<<<<< HEAD
 			}
 		} catch (SQLException e) {
 			log.info(e);
 		}
 		return false;
+=======
+			} else {
+				return false;
+			}
+		}
+
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 	}
 
 	@Override
@@ -63,7 +79,11 @@ public class QuestionDAOImplementation implements QuestionDAO {
 	}
 
 	@Override
+<<<<<<< HEAD
 	public boolean updateCounters(Question question) {
+=======
+	public boolean updateCounters(Question question) throws FileNotFoundException {
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 		System.out.println(question.toString());
 		try (Connection conn = JDBCconnectionUtil.getConnection()) {
 			String sql = "CALL UPDATE_COUNT(?, ?,?,?,?,?)";

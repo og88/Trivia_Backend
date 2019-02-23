@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 package com.revature.util;
 
 import java.io.FileNotFoundException;
@@ -45,6 +46,8 @@ public class JDBCconnectionUtil {
 	}
 }
 =======
+=======
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 package com.revature.util;
 
 import java.io.IOException;
@@ -89,4 +92,7 @@ public class JDBCconnectionUtil {
 		return null;	
 	}
 }
+<<<<<<< HEAD
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
+=======
 >>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241

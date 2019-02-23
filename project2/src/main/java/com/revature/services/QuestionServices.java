@@ -21,7 +21,17 @@ public class QuestionServices {
 	}
 	
 	public boolean insertQuestion(Question question) {
+<<<<<<< HEAD
 		return QuestionDAOImplementation.getQuestionDAO().insertQuestion(question);
+=======
+		try {
+			return QuestionDAOImplementation.getQuestionDAO().insertQuestion(question);
+		} catch (FileNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+>>>>>>> c7ae387a280f8a0f350e5e2cede4006b7baf3241
 	}
 	
 	public boolean updateQuestion(int questionID, Question question) {
