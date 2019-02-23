@@ -26,10 +26,6 @@ public class UserServices {
 		return userServices;
 	}
 	
-/*	User authenticateUser(String username, String password) throws FileNotFoundException, SQLException, UserNotFoundException {
-		return UserDAOImplementation.getUserDAO().authenticateUser(username, password);
-	}*/
-	
 	public User updateScore(User user) {
 		try {
 			return UserDAOImplementation.getUserDAO().updateScore(user);
@@ -68,7 +64,6 @@ public class UserServices {
 		try {
 			return UserDAOImplementation.getUserDAO().calculateRank(highScore);
 		} catch (FileNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;

@@ -211,34 +211,4 @@ public class UserDAOImplementation implements UserDAO {
 		return UserDAOImplementation.getUserDAO().getUser(user);
 		}
 	}
-
-	/*public User authenticateUser(String username, String password) throws UserNotFoundException, FileNotFoundException, SQLException {
-		try(Connection conn = JDBCconnectionUtil.getConnection()) {
-			String sql = "SELECT PASS FROM TriviaUsers WHERE USERNAME = ?";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, username);
-			
-			String sql2 = "? = CALL GET_USER_HASH(?,?)";
-			CallableStatement cs = conn.prepareCall(sql2);
-			cs.registerOutParameter(1, java.sql.Types.VARCHAR);
-			cs.setString(2,  username);
-			cs.setString(3,  password);
-			cs.execute();
-			
-			String vPass = cs.getString(1);
-			String cPass = "";
-			ResultSet rs = ps.executeQuery(); 
-			while(rs.next()) {
-				cPass = rs.getString("PASS");
-			}
-			
-			if(cPass == vPass) {
-				return getUser(username);
-			}
-			else {
-				throw new UserNotFoundException("Incorrect username or password");
-			}
-		}
-	}*/
-
 }
