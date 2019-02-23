@@ -43,8 +43,8 @@ public class QuestionServices {
 		return QuestionDAOImplementation.getQuestionDAO().getQuestion(questionID);
 	}
 	
-	public List<Question> getQuestionsByCategory(String questionCategory) {
-		return QuestionDAOImplementation.getQuestionDAO().getQuestionsByCategory(questionCategory);
+	public List<Question> getQuestions() {
+		return QuestionDAOImplementation.getQuestionDAO().getQuestions();
 	}
 	
 	public Object viewStatistics(int questionID) {

@@ -36,6 +36,8 @@ public class MasterDispatcher {
 			return UserServices.getUserServices().calculateRank(user.getHighScore());
 		} else if (req.getRequestURI().contains("leader")) { ///////////////////////////////////////////////////////////
 			return UserServices.getUserServices().viewLeaderboard();
+		} else if (req.getRequestURI().contains("questions")) { ///////////////////////////////////////////////////////////
+			return QuestionServices.getQuestionServices().getQuestions();
 		} else if (req.getRequestURI().contains("user")) {
 			return Users(req, resp);
 		} else if (req.getRequestURI().contains("question")) {
@@ -82,9 +84,8 @@ public class MasterDispatcher {
 		} else if (req.getRequestURI().contains("question/get")) { ///////////////////////////////////////////////
 			Question question = mapper.readValue(req.getReader(), Question.class);
 			return QuestionServices.getQuestionServices().getQuestion(question.getQuestionID());
-		} else if (req.getRequestURI().contains("question/Cat")) { ///////////////////////////////////////////////
-			Question question = mapper.readValue(req.getReader(), Question.class);
-			return QuestionServices.getQuestionServices().getQuestionsByCategory(question.getQuestionCategory());
+		} else if (req.getRequestURI().contains("questions")) { ///////////////////////////////////////////////
+			return QuestionServices.getQuestionServices().getQuestions();
 		} else if (req.getRequestURI().contains("stats")) { ///////////////////////////////////////////////////////////
 			Question question = mapper.readValue(req.getReader(), Question.class);
 			return QuestionServices.getQuestionServices().viewStatistics(question.getQuestionID());

@@ -30,7 +30,7 @@ public class UserServices {
 		return UserDAOImplementation.getUserDAO().authenticateUser(username, password);
 	}*/
 	
-	public boolean registerUser(User user) throws FileNotFoundException {
+	public User registerUser(User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	

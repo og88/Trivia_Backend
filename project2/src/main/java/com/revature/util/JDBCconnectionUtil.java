@@ -24,10 +24,6 @@ public class JDBCconnectionUtil {
 				log.fatal("Failed to obtain JDBC Connection");
 				throw new RuntimeException(e);
 			}
-			//FileInputStream in = new FileInputStream("C:\\SpringToolSuite\\project2\\src\\main\\resources\\dbConnInfo.properties");
-			/*InputStream in = new FileInputStream("dbConnInfo.properties");
-			props.load(in);
-			in.close();*/
 			
 			String driver = props.getProperty("jdbc.driver");
 				if(driver!=null) {
