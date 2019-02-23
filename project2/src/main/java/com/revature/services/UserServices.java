@@ -30,12 +30,24 @@ public class UserServices {
 		return UserDAOImplementation.getUserDAO().authenticateUser(username, password);
 	}*/
 	
+	public User updateScore(User user) {
+		try {
+			return UserDAOImplementation.getUserDAO().updateScore(user);
+		} catch (SQLException e) {
+//			e.printStackTrace();
+		} catch (UserNotFoundException e) {
+			//e.printStackTrace();
+		}
+		return new User();
+		
+	}
+	
 	public User registerUser(User user) throws FileNotFoundException {
 		return UserDAOImplementation.getUserDAO().registerUser(user);
 	}
 	
-	public boolean updateUser(String username, User user) throws FileNotFoundException {
-		return UserDAOImplementation.getUserDAO().updateUser(username, user);
+	public boolean updateUser(User user) throws FileNotFoundException {
+		return UserDAOImplementation.getUserDAO().updateUser(user);
 	}
 	
 	

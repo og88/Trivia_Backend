@@ -3,7 +3,7 @@ package com.revature.models;
 public class User {
 	private String username;
 	private String password;
-	private String tempPassword;
+	private String tempUserName;
 	private String email;
 	private int experience;
 	private int highScore;
@@ -16,7 +16,7 @@ public class User {
 		super();
 		this.username = username;
 		this.password = password;
-		this.tempPassword = tempPassword;
+		this.tempUserName = tempPassword;
 		this.email = email;
 		this.experience = experience;
 		this.highScore = highScore;
@@ -57,12 +57,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getTempPassword() {
-		return tempPassword;
+	public String getTempUsername() {
+		return tempUserName;
 	}
 
-	public void setTempPassword(String tempPassword) {
-		this.tempPassword = tempPassword;
+	public void setTempUsername(String tempPassword) {
+		this.tempUserName = tempPassword;
 	}
 
 	public String getEmail() {
@@ -91,7 +91,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", tempPassword=" + tempPassword + ", email="
+		return "User [username=" + username + ", password=" + password + ", tempPassword=" + tempUserName + ", email="
 				+ email + ", experience=" + experience + ", highScore=" + highScore + "]";
 	}
 
@@ -103,7 +103,7 @@ public class User {
 		result = prime * result + experience;
 		result = prime * result + highScore;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((tempPassword == null) ? 0 : tempPassword.hashCode());
+		result = prime * result + ((tempUserName == null) ? 0 : tempUserName.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -131,10 +131,10 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (tempPassword == null) {
-			if (other.tempPassword != null)
+		if (tempUserName == null) {
+			if (other.tempUserName != null)
 				return false;
-		} else if (!tempPassword.equals(other.tempPassword))
+		} else if (!tempUserName.equals(other.tempUserName))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -146,7 +146,7 @@ public class User {
 	
 	public UserMemento CreateMemento() {
 		
-		return new UserMemento(this.username, this.password, this.tempPassword, this.email, this.experience, this.highScore);
+		return new UserMemento(this.username, this.password, this.tempUserName, this.email, this.experience, this.highScore);
 		
 	}
 	
@@ -154,7 +154,7 @@ public class User {
 		
 		this.username = memento.getUsername();
 		this.password = memento.getPassword();
-		this.tempPassword = memento.getTempPassword();
+		this.tempUserName = memento.getTempPassword();
 		this.email = memento.getEmail();
 		this.experience = memento.getExperience();
 		this.highScore = memento.getHighScore();
