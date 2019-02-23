@@ -3,6 +3,7 @@ package com.revature.tests;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,19 +14,19 @@ import com.revature.services.QuestionServices;
 
 class project2Tests {
 
-	@BeforeAll
+	@BeforeClass
 	static void setUpBeforeClass() throws Exception {
 	}
 
-	@AfterAll
+	@AfterClass
 	static void tearDownAfterClass() throws Exception {
 	}
 
-	@BeforeEach
+	@Before
 	void setUp() throws Exception {
 	}
 
-	@AfterEach
+	@After
 	void tearDown() throws Exception {
 	}
 	

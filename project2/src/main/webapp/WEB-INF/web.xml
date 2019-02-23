@@ -3,5 +3,40 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+	<display-name>Archetype Created Web Application</display-name>
+	<filter>
+		<filter-name>filter</filter-name>
+		<display-name>filter</display-name>
+		<description></description>
+		<filter-class>com.revature.filter.filter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filter</filter-name>
+		<url-pattern>/rest/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>MServlet</servlet-name>
+		<servlet-class>com.revature.Servlets.MasterServlet</servlet-class>
+	</servlet>
+
+
+	<servlet-mapping>
+		<servlet-name>MServlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<resource-ref>
+		<res-ref-name>
+			jdbc/PaceCPDemo
+		</res-ref-name>
+		<res-type>
+			javax.sql.DataSource
+		</res-type>
+		<res-auth>
+			Container
+		</res-auth>
+	</resource-ref>
 </web-app>
+
+
