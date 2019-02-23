@@ -6,9 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -73,9 +71,10 @@ public class QuestionDAOImplementation implements QuestionDAO {
 			ps.setString(2, question.getQuestion());
 			ps.setString(3, question.getQuestionCategory());
 			ps.setInt(4, question.getCorrectCount());
-			ps.setInt(5, question.getIncorrectCount());
+			ps.setInt(5,question.getIncorrectCount());
 			ps.setInt(6, question.getDifficulty());
 			ps.execute();
+
 
 		} catch (SQLException e) {
 			log.error(e.getMessage());
@@ -131,35 +130,6 @@ public class QuestionDAOImplementation implements QuestionDAO {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public List<Question> getQuestions() {
-
-		// Attempt to get a connection:
-
-		try (Connection conn = JDBCconnectionUtil.getConnection()) {
-
-			// Send query to database:
-
-			Statement stmt = conn.createStatement();
-			String sql = "select * from Questions";
-			ResultSet rs = stmt.executeQuery(sql);
-
-			// Generate a list of questions:
-
-			List<Question> questions = new ArrayList<>();
-			while (rs.next()) {
-				questions.add(new Question(rs.getInt("QUESTION_ID"), rs.getString("QUESTION"),
-						rs.getString("QUESTION_CATEGORY"), rs.getInt("CORRECT_COUNT"), rs.getInt("INCORRECT_COUNT"),
-						rs.getInt("DIFFICULTY")));
-			}
-			return questions;
-		} catch (SQLException e) {
-			log.error(e.getMessage());
-			log.error(e.getStackTrace());
-		}
-		return null;
 	}
 
 }
