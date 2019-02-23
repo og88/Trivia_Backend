@@ -3,7 +3,7 @@ package com.revature.models;
 public class User {
 	private String username;
 	private String password;
-	private String tempUserName;
+	private String tempUsername;
 	private String email;
 	private int experience;
 	private int highScore;
@@ -12,11 +12,11 @@ public class User {
 		super();
 	}
 
-	public User(String username, String password, String tempPassword, String email, int experience, int highScore) {
+	public User(String username, String password, String tempUsername, String email, int experience, int highScore) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.tempUserName = tempPassword;
+		this.tempUsername = tempUsername;
 		this.email = email;
 		this.experience = experience;
 		this.highScore = highScore;
@@ -58,11 +58,11 @@ public class User {
 	}
 
 	public String getTempUsername() {
-		return tempUserName;
+		return tempUsername;
 	}
 
-	public void setTempUsername(String tempPassword) {
-		this.tempUserName = tempPassword;
+	public void setTempUsername(String tempUsername) {
+		this.tempUsername = tempUsername;
 	}
 
 	public String getEmail() {
@@ -91,7 +91,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", tempPassword=" + tempUserName + ", email="
+		return "User [username=" + username + ", password=" + password + ", tempUsername=" + tempUsername + ", email="
 				+ email + ", experience=" + experience + ", highScore=" + highScore + "]";
 	}
 
@@ -103,7 +103,7 @@ public class User {
 		result = prime * result + experience;
 		result = prime * result + highScore;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((tempUserName == null) ? 0 : tempUserName.hashCode());
+		result = prime * result + ((tempUsername == null) ? 0 : tempUsername.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -131,10 +131,10 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (tempUserName == null) {
-			if (other.tempUserName != null)
+		if (tempUsername == null) {
+			if (other.tempUsername != null)
 				return false;
-		} else if (!tempUserName.equals(other.tempUserName))
+		} else if (!tempUsername.equals(other.tempUsername))
 			return false;
 		if (username == null) {
 			if (other.username != null)
@@ -146,7 +146,7 @@ public class User {
 	
 	public UserMemento CreateMemento() {
 		
-		return new UserMemento(this.username, this.password, this.tempUserName, this.email, this.experience, this.highScore);
+		return new UserMemento(this.username, this.password, this.tempUsername, this.email, this.experience, this.highScore);
 		
 	}
 	
@@ -154,7 +154,7 @@ public class User {
 		
 		this.username = memento.getUsername();
 		this.password = memento.getPassword();
-		this.tempUserName = memento.getTempPassword();
+		this.tempUsername = memento.gettempUserName();
 		this.email = memento.getEmail();
 		this.experience = memento.getExperience();
 		this.highScore = memento.getHighScore();
